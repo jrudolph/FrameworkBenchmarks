@@ -16,29 +16,29 @@ class FrameworkTest:
     echo ""
     echo "---------------------------------------------------------"
     echo " Running Primer {name}"
-    echo " wrk -d 60 -c 8 -t 8 http://{server_host}:{port}{url}"
+    echo " wrk -d 5 -c 8 -t 8 {headers} http://{server_host}:{port}{url}"
     echo "---------------------------------------------------------"
     echo ""
-    wrk -d 5 -c 8 -t 8 http://{server_host}:{port}{url}
+    wrk -d 5 -c 8 -t 8 {headers} http://{server_host}:{port}{url}
     sleep 5
     
     echo ""
     echo "---------------------------------------------------------"
     echo " Running Warmup {name}"
-    echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}"
+    echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}"
     echo "---------------------------------------------------------"
     echo ""
-    wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}
+    wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}
     sleep 5
     for c in {interval}
     do
       echo ""
       echo "---------------------------------------------------------"
       echo " Concurrency: $c for {name}"
-      echo " wrk -d {duration} -c $c -t $(($c>{max_threads}?{max_threads}:$c)) http://{server_host}:{port}{url}"
+      echo " wrk -d {duration} -c $c -t $(($c>{max_threads}?{max_threads}:$c)) {headers} http://{server_host}:{port}{url}"
       echo "---------------------------------------------------------"
       echo ""
-      wrk -d {duration} -c "$c" -t "$(($c>{max_threads}?{max_threads}:$c))" http://{server_host}:{port}{url}
+      wrk -d {duration} -c "$c" -t "$(($c>{max_threads}?{max_threads}:$c))" {headers} http://{server_host}:{port}{url}
       sleep 2
     done
   """
@@ -49,29 +49,29 @@ class FrameworkTest:
     echo ""
     echo "---------------------------------------------------------"
     echo " Running Primer {name}"
-    echo " wrk -d 5 -c 8 -t 8 http://{server_host}:{port}{url}2"
+    echo " wrk -d 5 -c 8 -t 8 {headers} http://{server_host}:{port}{url}2"
     echo "---------------------------------------------------------"
     echo ""
-    wrk -d 5 -c 8 -t 8 http://{server_host}:{port}{url}2
+    wrk -d 5 -c 8 -t 8 {headers} http://{server_host}:{port}{url}2
     sleep 5
     
     echo ""
     echo "---------------------------------------------------------"
     echo " Running Warmup {name}"
-    echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}2"
+    echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}2"
     echo "---------------------------------------------------------"
     echo ""
-    wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}2
+    wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}2
     sleep 5
     for c in {interval}
     do
       echo ""
       echo "---------------------------------------------------------"
       echo " Queries: $c for {name}"
-      echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}$c"
+      echo " wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}$c"
       echo "---------------------------------------------------------"
       echo ""
-      wrk -d {duration} -c {max_concurrency} -t {max_threads} http://{server_host}:{port}{url}"$c"
+      wrk -d {duration} -c {max_concurrency} -t {max_threads} {headers} http://{server_host}:{port}{url}"$c"
       sleep 2
     done
   """
@@ -417,7 +417,7 @@ class FrameworkTest:
     return self.concurrency_template.format(max_concurrency=self.benchmarker.max_concurrency, 
       max_threads=self.benchmarker.max_threads, name=self.name, duration=self.benchmarker.duration, 
       interval=" ".join("{}".format(item) for item in self.benchmarker.concurrency_levels), 
-      server_host=self.benchmarker.server_host, port=port, url=url)
+      server_host=self.benchmarker.server_host, port=port, url=url, headers=self.benchmarker.headers)
   ############################################################
   # End __generate_concurrency_script
   ############################################################

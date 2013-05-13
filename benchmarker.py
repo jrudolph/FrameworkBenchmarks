@@ -467,6 +467,11 @@ class Benchmarker:
     else:
       self.timestamp = time.strftime("%Y%m%d%H%M%S", time.localtime())
 
+    self.headers = """-H 'Accept: application/json;q=0.9,*/*; q=0.8' \
+         -H 'Accept-Language: en-US,en; q=0.8' \
+         -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu/12.10 Chromium/27.0.1453.6 Chrome/27.0.1453.6 Safari/537.36' \
+      """
+
     # Setup the concurrency levels array. This array goes from
     # starting_concurrency to max concurrency, doubling each time
     self.concurrency_levels = []
