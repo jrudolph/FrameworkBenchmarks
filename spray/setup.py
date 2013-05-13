@@ -6,7 +6,7 @@ import os
 
 def start(args=None):
     subprocess.check_call("./sbt assembly", shell=True, cwd="spray")
-    subprocess.Popen("java -jar target/scala-2.10/spray-benchmark-assembly-1.0.jar", cwd="spray", shell=True)
+    subprocess.Popen("java -Dapp.db.host=" + args.database_host + " -jar target/scala-2.10/spray-benchmark-assembly-1.0.jar", cwd="spray", shell=True)
     time.sleep(5)
     return 0
 

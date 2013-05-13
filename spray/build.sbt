@@ -18,6 +18,8 @@ libraryDependencies ++= Seq(
   "io.spray" % "spray-can" % "1.1-20130513",
   "com.typesafe.akka" %%  "akka-actor" % "2.1.2",
   "com.typesafe.akka" %%  "akka-slf4j" % "2.1.2",
+  "com.typesafe.slick" %% "slick" % "1.0.1-RC1",
+  "mysql" % "mysql-connector-java" % "5.1.25",
   "ch.qos.logback"% "logback-classic" % "1.0.12" % "runtime"
 )
 
