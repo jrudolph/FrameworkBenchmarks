@@ -17,7 +17,7 @@ class BenchmarkService extends Actor {
   def jsonResponseEntity = HttpEntity(ContentType.`application/json`, JsObject("message" -> JsString("Hello, World!")).compactPrint)
 
   def fastPath: Http.FastPath = {
-    case HttpRequest(GET, Uri(_, _, Path.Slash(Path.Segment("fast-json", Path.Empty)), _, _), _, _, _) => HttpResponse(entity = jsonResponseEntity)
+    case HttpRequest(GET, Uri(_, _, Path.Slash(Path.Segment("json", Path.Empty)), _, _), _, _, _) => HttpResponse(entity = jsonResponseEntity)
   }
 
   def receive = {
@@ -32,15 +32,12 @@ class BenchmarkService extends Actor {
             <p>Defined resources:</p>
             <ul>
               <li><a href="/json">/json</a></li>
-              <li><a href="/fast-json">/fast-json</a></li>
               <li><a href="/stop">/stop</a></li>
             </ul>
           </body>
         </html>.toString()
       )
     )
-
-    case HttpRequest(GET, Uri(_, _, Path.Slash(Path.Segment("json", Path.Empty)), _, _), _, _, _) => sender ! HttpResponse(entity = jsonResponseEntity)
 
     case HttpRequest(GET, Uri.Path("/stop"), _, _, _) =>
       sender ! HttpResponse(entity = "Shutting down in 1 second ...")
